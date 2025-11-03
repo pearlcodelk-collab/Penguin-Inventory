@@ -6,12 +6,15 @@ import {
   Package, 
   FileText, 
   Database, 
-  Upload 
+  Upload,
+  Users
 } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import logo from '../assets/logo.png'
 
 const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
   const location = useLocation()
+  const { isSuperAdmin } = useAuth()
   
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
@@ -21,6 +24,17 @@ const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
     { id: 'item-master', icon: Database, label: 'Item Master', path: '/item-master' },
     { id: 'data-upload', icon: Upload, label: 'Data Upload', path: '/data-upload' },
   ]
+
+  // Add User Management for Super Admin
+  if (isSuperAdmin()) {
+    menuItems.push({
+      id: 'user-management',
+      icon: Users,
+      label: 'User Management',
+      path: '/user-management',
+      superAdminOnly: true
+    })
+  }
 
   return (
     <>
@@ -59,6 +73,8 @@ const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
                     className={`w-full flex items-center ${isCollapsed && !isMobile ? 'justify-center px-2' : 'space-x-3 px-4'} py-3 rounded-lg text-left transition-colors ${
                       isActive
                         ? 'bg-blue-300 text-white'
+                        : item.superAdminOnly
+                        ? 'text-purple-700 hover:bg-purple-50'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                     title={isCollapsed && !isMobile ? item.label : ''}
@@ -66,6 +82,11 @@ const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
                     <IconComponent className="w-5 h-5" />
                     {(!isCollapsed || isMobile) && (
                       <span className="font-medium">{item.label}</span>
+                    )}
+                    {item.superAdminOnly && (!isCollapsed || isMobile) && (
+                      <span className="ml-auto px-2 py-0.5 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                        Admin
+                      </span>
                     )}
                   </Link>
                 </li>

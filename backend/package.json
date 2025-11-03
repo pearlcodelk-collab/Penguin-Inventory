@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "server": "node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed:superadmin": "node utils/seedSuperAdmin.js"
   },
   "keywords": [],
   "author": "",
