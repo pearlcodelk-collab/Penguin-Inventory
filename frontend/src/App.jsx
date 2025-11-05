@@ -7,10 +7,10 @@ import DashBoard from './pages/DashBoard'
 import GrnEntry from './pages/GrnEntry'
 import StockBalance from './pages/StockBalance'
 import Reporting from './pages/Reporting'
-import ItemMaster from './pages/ItemMaster'
 import DataUpload from './pages/DataUpload'
 import UserManagement from './pages/UserManagement'
 import ProtectedRoute from './components/ProtectedRoute'
+import ItemUpload from './pages/ItemUpload'
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -29,10 +29,10 @@ const App = () => {
         </ProtectedRoute>
       }>
         <Route path='dashboard' element={<DashBoard />} />
+        <Route path='item-upload' element={<ItemUpload />} />
         <Route path='grn-entry' element={<GrnEntry />} />
         <Route path='stock-balance' element={<StockBalance />} />
         <Route path='reporting' element={<Reporting />} />
-        <Route path='item-master' element={<ItemMaster />} />
         <Route path='data-upload' element={<DataUpload />} />
         
         {/* Super Admin Only Routes */}

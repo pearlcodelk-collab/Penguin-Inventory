@@ -18,10 +18,10 @@ const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
   
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+    { id: 'item-upload', icon: Database, label: 'Item Upload', path: '/item-upload' },
     { id: 'grn-entry', icon: ClipboardList, label: 'GRN Entry', path: '/grn-entry' },
     { id: 'stock-balance', icon: Package, label: 'Stock Balance', path: '/stock-balance' },
     { id: 'reporting', icon: FileText, label: 'Reporting', path: '/reporting' },
-    { id: 'item-master', icon: Database, label: 'Item Master', path: '/item-master' },
     { id: 'data-upload', icon: Upload, label: 'Data Upload', path: '/data-upload' },
   ]
 
