@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { 
   LayoutDashboard, 
@@ -7,7 +8,9 @@ import {
   FileText, 
   Database, 
   Upload,
-  Users
+  Users,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import logo from '../assets/logo.png'
@@ -36,6 +39,14 @@ const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
     })
   }
 
+  const [isItemUploadOpen, setIsItemUploadOpen] = useState(location.pathname.startsWith('/item-upload'))
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/item-upload')) {
+      setIsItemUploadOpen(true)
+    }
+  }, [location.pathname])
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -63,8 +74,69 @@ const Sidebar = ({ isCollapsed, isMobile, isMobileOpen, onToggleSidebar }) => {
         <nav className="flex-1 p-4">
           <ul className="space-y-2">
             {menuItems.map((item) => {
-              const isActive = location.pathname === item.path
               const IconComponent = item.icon
+              const isActive = location.pathname === item.path
+              if (item.id === 'item-upload') {
+                const isParentActive = location.pathname.startsWith('/item-upload')
+                return (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      onClick={() => setIsItemUploadOpen((prev) => !prev)}
+                      className={`w-full flex items-center ${isCollapsed && !isMobile ? 'justify-center px-2' : 'space-x-3 px-4'} py-3 rounded-lg text-left transition-colors ${
+                        isParentActive
+                          ? 'bg-blue-300 text-white'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                      title={isCollapsed && !isMobile ? item.label : ''}
+                    >
+                      <IconComponent className="w-5 h-5" />
+                      {(!isCollapsed || isMobile) && (
+                        <>
+                          <span className="font-medium">{item.label}</span>
+                          <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${isItemUploadOpen ? 'rotate-180' : ''}`} />
+                        </>
+                      )}
+                    </button>
+                    {(!isCollapsed || isMobile) && isItemUploadOpen && (
+                      <ul className="mt-1 space-y-1">
+                        <li>
+                          <Link
+                            to="/item-upload/categories"
+                            onClick={() => isMobile && onToggleSidebar()}
+                            className={`w-full flex items-center ${isCollapsed && !isMobile ? 'justify-center px-2' : 'space-x-3 pl-11 pr-4'} py-2 rounded-lg text-left transition-colors ${
+                              location.pathname === '/item-upload/categories'
+                                ? 'bg-blue-100 text-blue-800'
+                                : 'text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                            {(!isCollapsed || isMobile) && (
+                              <span className="text-sm font-medium">Categories</span>
+                            )}
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/item-upload/items"
+                            onClick={() => isMobile && onToggleSidebar()}
+                            className={`w-full flex items-center ${isCollapsed && !isMobile ? 'justify-center px-2' : 'space-x-3 pl-11 pr-4'} py-2 rounded-lg text-left transition-colors ${
+                              location.pathname === '/item-upload/items'
+                                ? 'bg-blue-100 text-blue-800'
+                                : 'text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                            {(!isCollapsed || isMobile) && (
+                              <span className="text-sm font-medium">Items</span>
+                            )}
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
+                  </li>
+                )
+              }
               return (
                 <li key={item.id}>
                   <Link

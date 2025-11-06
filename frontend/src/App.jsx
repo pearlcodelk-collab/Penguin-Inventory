@@ -11,6 +11,7 @@ import DataUpload from './pages/DataUpload'
 import UserManagement from './pages/UserManagement'
 import ProtectedRoute from './components/ProtectedRoute'
 import ItemUpload from './pages/ItemUpload'
+import ItemItems from './pages/ItemItems'
 
 const App = () => {
   const { isAuthenticated } = useAuth();
@@ -29,7 +30,9 @@ const App = () => {
         </ProtectedRoute>
       }>
         <Route path='dashboard' element={<DashBoard />} />
-        <Route path='item-upload' element={<ItemUpload />} />
+        <Route path='item-upload' element={<Navigate to="/item-upload/categories" />} />
+        <Route path='item-upload/categories' element={<ItemUpload />} />
+        <Route path='item-upload/items' element={<ItemItems />} />
         <Route path='grn-entry' element={<GrnEntry />} />
         <Route path='stock-balance' element={<StockBalance />} />
         <Route path='reporting' element={<Reporting />} />
