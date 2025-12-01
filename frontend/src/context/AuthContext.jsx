@@ -17,14 +17,23 @@ export const AuthProvider = ({ children }) => {
 
     // Initialize auth from localStorage
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        const storedUser = localStorage.getItem('user');
+        try {
+            const storedToken = localStorage.getItem('token');
+            const storedUser = localStorage.getItem('user');
 
-        if (storedToken && storedUser) {
-            setToken(storedToken);
-            setUser(JSON.parse(storedUser));
+            if (storedToken && storedUser) {
+                setToken(storedToken);
+                try {
+                    const parsed = JSON.parse(storedUser);
+                    setUser(parsed);
+                } catch (_) {
+                    // Corrupt user data; clear and continue unauthenticated
+                    localStorage.removeItem('user');
+                }
+            }
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }, []);
 
     // Login function

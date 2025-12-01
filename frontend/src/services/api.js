@@ -1,6 +1,21 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/api';
+// Resolve API base URL from multiple possible env names
+const resolveBaseUrl = () => {
+  const env = (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env : {};
+  const candidate = env.VITE_API_BASE_URL
+    || env.VITE_BACKEND_URL
+    || env.VITE_API_URL
+    || env.VITE_BASE_API_URL
+    || env.VITE_SERVER_URL
+    || env.VITE_BASE_URL
+    || 'http://localhost:3000/api';
+
+  // Normalize: remove trailing slash for consistency
+  return typeof candidate === 'string' ? candidate.replace(/\/$/, '') : candidate;
+};
+
+const API_BASE_URL = resolveBaseUrl();
 
 // Create axios instance
 const api = axios.create({
